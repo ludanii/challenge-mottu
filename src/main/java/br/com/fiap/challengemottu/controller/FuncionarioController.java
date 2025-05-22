@@ -106,4 +106,5 @@ public class FuncionarioController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

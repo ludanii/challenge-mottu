@@ -9,7 +9,7 @@ public class PatioMapper {
     public Patio requestToPatio(PatioRequest patioRequest) {
         Patio patio = new Patio();
         patio.setLocalizacao(patioRequest.localizacao());
-        patio.setquantidadeVagas(patioRequest.quantidadeVagas());
+        patio.setQuantidadeVagas(patioRequest.quantidadeVagas());
         return patio;
     }
 
@@ -17,6 +17,6 @@ public class PatioMapper {
         return new PatioResponse(
                 patio.getIdPatio(),
                 patio.getLocalizacao(),
-                patio.getquantidadeVagas());
+                patio.getQuantidadeVagas());
     }
 }

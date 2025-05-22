@@ -32,11 +32,11 @@ public class MotoController {
 
     @Operation(summary = "Cria uma nova moto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Moto criada com sucesso",
+            @ApiResponse(responseCode = "201", description = "Moto criada com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Moto.class))),
-            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos",
+            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos!",
                     content = @Content(schema = @Schema()))
     })
     @PostMapping
@@ -56,11 +56,11 @@ public class MotoController {
     // @RequestParam localhost:8080/motos/?id=1
     @Operation(summary = "Retorna uma moto por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Moto encontrada com sucesso",
+            @ApiResponse(responseCode = "200", description = "Moto encontrada com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = MotoResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Nenhuma moto encontrada para o ID fornecido",
+            @ApiResponse(responseCode = "404", description = "Nenhuma moto encontrada para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @GetMapping("/{id}")
@@ -74,11 +74,11 @@ public class MotoController {
 
     @Operation(summary = "Atualiza uma moto existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Moto atualizada com sucesso",
+            @ApiResponse(responseCode = "201", description = "Moto atualizada com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Moto.class))),
-            @ApiResponse(responseCode = "400", description = "Nenhuma moto encontrada para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhuma moto encontrada para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @PutMapping("/{id}")
@@ -93,9 +93,9 @@ public class MotoController {
 
     @Operation(summary = "Exclui uma moto por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Moto excluída com sucesso",
+            @ApiResponse(responseCode = "200", description = "Moto excluída com sucesso!",
                     content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "400", description = "Nenhuma moto encontrada para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhuma moto encontrada para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @DeleteMapping("/{id}")

@@ -32,11 +32,11 @@ public class FuncionarioController {
 
     @Operation(summary = "Cria um novo funcionário")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Funcionário criada com sucesso",
+            @ApiResponse(responseCode = "201", description = "Funcionário criada com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Funcionario.class))),
-            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos",
+            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos!",
                     content = @Content(schema = @Schema()))
     })
     @PostMapping
@@ -56,11 +56,11 @@ public class FuncionarioController {
     // @RequestParam localhost:8080/funcionarios/?id=1
     @Operation(summary = "Retorna um funcionário por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Funcionário encontrado com sucesso",
+            @ApiResponse(responseCode = "200", description = "Funcionário encontrado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = FuncionarioResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Nenhum funcionário encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "404", description = "Nenhum funcionário encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @GetMapping("/{id}")
@@ -74,11 +74,11 @@ public class FuncionarioController {
 
     @Operation(summary = "Atualiza um funcionário existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Funcionário atualizado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Funcionário atualizado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Funcionario.class))),
-            @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @PutMapping("/{id}")
@@ -93,9 +93,9 @@ public class FuncionarioController {
 
     @Operation(summary = "Exclui um funcionário por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Funcionário excluído com sucesso",
+            @ApiResponse(responseCode = "200", description = "Funcionário excluído com sucesso!",
                     content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @DeleteMapping("/{id}")

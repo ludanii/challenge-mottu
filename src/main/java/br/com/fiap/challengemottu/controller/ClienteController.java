@@ -29,11 +29,11 @@ public class ClienteController {
 
     @Operation(summary = "Cria um novo cliente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cliente criado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Cliente criado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Cliente.class))),
-            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos",
+            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos!",
                     content = @Content(schema = @Schema()))
     })
     @PostMapping
@@ -53,11 +53,11 @@ public class ClienteController {
     // @RequestParam localhost:8080/clientes/?id=1
     @Operation(summary = "Retorna um cliente por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente encontrado com sucesso",
+            @ApiResponse(responseCode = "200", description = "Cliente encontrado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ClienteResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Nenhum cliente encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "404", description = "Nenhum cliente encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @GetMapping("/{id}")
@@ -71,11 +71,11 @@ public class ClienteController {
 
     @Operation(summary = "Atualiza um cliente existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cliente atualizado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Cliente atualizado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Cliente.class))),
-            @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @PutMapping("/{id}")
@@ -90,9 +90,9 @@ public class ClienteController {
 
     @Operation(summary = "Exclui um cliente por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente excluído com sucesso",
+            @ApiResponse(responseCode = "200", description = "Cliente excluído com sucesso!",
                     content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @DeleteMapping("/{id}")

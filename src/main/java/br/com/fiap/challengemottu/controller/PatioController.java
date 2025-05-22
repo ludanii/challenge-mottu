@@ -29,11 +29,11 @@ public class PatioController {
 
     @Operation(summary = "Cria um novo pátio")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Pátio criado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Pátio criado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Patio.class))),
-            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos",
+            @ApiResponse(responseCode = "400", description = "Parâmetros informados são inválidos!",
                     content = @Content(schema = @Schema()))
     })
     @PostMapping
@@ -53,11 +53,11 @@ public class PatioController {
     // @RequestParam localhost:8080/patios/?id=1
     @Operation(summary = "Retorna um pátio por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pátio encontrado com sucesso",
+            @ApiResponse(responseCode = "200", description = "Pátio encontrado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = PatioResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Nenhum pátio encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "404", description = "Nenhum pátio encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @GetMapping("/{id}")
@@ -71,11 +71,11 @@ public class PatioController {
 
     @Operation(summary = "Atualiza um pátio existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Pátio atualizado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Pátio atualizado com sucesso!",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Patio.class))),
-            @ApiResponse(responseCode = "400", description = "Nenhum pátio encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum pátio encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @PutMapping("/{id}")
@@ -90,9 +90,9 @@ public class PatioController {
 
     @Operation(summary = "Exclui um pátio por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pátio excluído com sucesso",
+            @ApiResponse(responseCode = "200", description = "Pátio excluído com sucesso!",
                     content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "400", description = "Nenhum pátio encontrado para o ID fornecido",
+            @ApiResponse(responseCode = "400", description = "Nenhum pátio encontrado para o ID fornecido!",
                     content = @Content(schema = @Schema()))
     })
     @DeleteMapping("/{id}")

@@ -27,6 +27,9 @@ public class MotoController {
     @Autowired
     private MotoService motoService;
 
+    // CREATE, READ, UPDATE, DELETE
+    // POST, GET, PUT, DELETE
+
     @Operation(summary = "Cria uma nova moto")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Moto criada com sucesso",
@@ -105,7 +108,3 @@ public class MotoController {
     }
 
 }
-
-
-
-

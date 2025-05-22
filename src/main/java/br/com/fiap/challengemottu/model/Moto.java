@@ -1,9 +1,8 @@
 package br.com.fiap.challengemottu.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Moto {
@@ -14,6 +13,16 @@ public class Moto {
     private String placa;
     private String status; // disponível, alugada, em manutenção
     private String setor; // bom, intermediário, ruim
+
+    @ManyToOne
+    @JoinColumn(name = "id_patio")
+    private Patio patio;
+
+    @OneToOne(mappedBy = "moto", cascade = CascadeType.ALL)
+    private Cliente cliente;
+
+    @OneToMany(mappedBy = "moto")
+    private List<Agendamento> agendamentos;
 
     public Long getIdMoto() {
         return idMoto;
@@ -53,5 +62,29 @@ public class Moto {
 
     public void setSetor(String setor) {
         this.setor = setor;
+    }
+
+    public Patio getPatio() {
+        return patio;
+    }
+
+    public void setPatio(Patio patio) {
+        this.patio = patio;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
     }
 }

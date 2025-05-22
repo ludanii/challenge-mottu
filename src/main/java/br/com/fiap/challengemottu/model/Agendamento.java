@@ -1,9 +1,6 @@
 package br.com.fiap.challengemottu.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +12,14 @@ public class Agendamento {
     private String descricao;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_moto")
+    private Moto moto;
 
     public Agendamento() {}
 
@@ -52,5 +57,21 @@ public class Agendamento {
 
     public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Moto getMoto() {
+        return moto;
+    }
+
+    public void setMoto(Moto moto) {
+        this.moto = moto;
     }
 }

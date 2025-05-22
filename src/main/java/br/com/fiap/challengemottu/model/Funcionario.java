@@ -1,10 +1,9 @@
 package br.com.fiap.challengemottu.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+
+import java.util.List;
 
 @Entity
 public class Funcionario {
@@ -12,9 +11,12 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFuncionario;
     private String nomeUsuario;
-    private String senha;
     @Email
     private String email;
+    private String senha;
+
+    @OneToMany(mappedBy = "funcionario")
+    private List<Patio> patios;
 
     public Long getIdFuncionario() {
         return idFuncionario;
@@ -46,5 +48,13 @@ public class Funcionario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Patio> getPatios() {
+        return patios;
+    }
+
+    public void setPatios(List<Patio> patios) {
+        this.patios = patios;
     }
 }

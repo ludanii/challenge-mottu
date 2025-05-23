@@ -41,11 +41,19 @@ public class ClienteService {
     }
 
     public ClienteResponse update(ClienteRequest clienteRequest, Long id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if (cliente.isPresent()) {
-            Cliente clienteSalvo = clienteRepository.save(cliente.get());
-            return clienteMapper.clienteToResponse(clienteSalvo);
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if (clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+            cliente.setNome(clienteRequest.nome());
+            cliente.setEmail(clienteRequest.email());
+            cliente.setCpf(clienteRequest.cpf());
+            cliente.setTelefone(clienteRequest.telefone());
+            cliente.setDataNascimento(clienteRequest.dataNascimento());
+
+            Cliente clienteAtualizado = clienteRepository.save(cliente);
+            return clienteMapper.clienteToResponse(clienteAtualizado);
         }
+
         return null;
     }
 

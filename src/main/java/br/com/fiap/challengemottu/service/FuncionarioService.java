@@ -41,11 +41,18 @@ public class FuncionarioService {
     }
 
     public FuncionarioResponse update(FuncionarioRequest funcionarioRequest, Long id) {
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
-        if (funcionario.isPresent()) {
-            Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario.get());
-            return funcionarioMapper.funcionarioToResponse(funcionarioSalvo);
+        Optional<Funcionario> funcionarioOptional = funcionarioRepository.findById(id);
+
+        if (funcionarioOptional.isPresent()) {
+            Funcionario funcionario = funcionarioOptional.get();
+            funcionario.setNomeUsuario(funcionarioRequest.nomeUsuario());
+            funcionario.setEmail(funcionarioRequest.email());
+            funcionario.setSenha(funcionarioRequest.senha());
+
+            Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
+            return funcionarioMapper.funcionarioToResponse(funcionarioAtualizado);
         }
+
         return null;
     }
 

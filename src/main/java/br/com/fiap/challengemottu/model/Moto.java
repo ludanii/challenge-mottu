@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+@Table(name = "tab_motos")
 @Entity
 public class Moto {
     @Id
@@ -20,9 +21,6 @@ public class Moto {
 
     @OneToOne(mappedBy = "moto", cascade = CascadeType.ALL)
     private Cliente cliente;
-
-    @OneToMany(mappedBy = "moto")
-    private List<Agendamento> agendamentos;
 
     public Long getIdMoto() {
         return idMoto;
@@ -80,11 +78,4 @@ public class Moto {
         this.cliente = cliente;
     }
 
-    public List<Agendamento> getAgendamentos() {
-        return agendamentos;
-    }
-
-    public void setAgendamentos(List<Agendamento> agendamentos) {
-        this.agendamentos = agendamentos;
-    }
 }

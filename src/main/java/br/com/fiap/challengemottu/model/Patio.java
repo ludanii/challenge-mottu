@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+@Table(name = "tab_patios")
 @Entity
 public class Patio {
     @Id

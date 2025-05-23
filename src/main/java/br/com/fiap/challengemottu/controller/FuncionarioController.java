@@ -48,7 +48,7 @@ public class FuncionarioController {
     @GetMapping
     public ResponseEntity<Page<FuncionarioResponse>> readFuncionarios(@RequestParam(defaultValue = "0") Integer pageNumber) {
         Pageable pageable = PageRequest
-                .of(pageNumber, 2, Sort.by("nome_usuario").ascending());
+                .of(pageNumber, 2, Sort.by("nomeUsuario").ascending());
         return new ResponseEntity<>(funcionarioService.findAll(pageable), HttpStatus.OK);
     }
 

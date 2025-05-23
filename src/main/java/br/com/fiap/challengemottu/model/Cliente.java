@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 import java.util.List;
 
+
+@Table(name = "tab_clientes")
 @Entity
 public class Cliente {
     @Id
@@ -23,9 +25,6 @@ public class Cliente {
     @OneToOne
     @JoinColumn(name = "id_moto")
     private Moto moto;
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Agendamento> agendamentos;
 
     public Long getIdCliente() {
         return idCliente;
@@ -83,11 +82,4 @@ public class Cliente {
         this.moto = moto;
     }
 
-    public List<Agendamento> getAgendamentos() {
-        return agendamentos;
-    }
-
-    public void setAgendamentos(List<Agendamento> agendamentos) {
-        this.agendamentos = agendamentos;
-    }
 }

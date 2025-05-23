@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 
 import java.util.List;
 
+@Table(name = "tab_funcionarios")
 @Entity
 public class Funcionario {
     @Id

@@ -41,11 +41,16 @@ public class PatioService {
     }
 
     public PatioResponse update(PatioRequest patioRequest, Long id) {
-        Optional<Patio> patio = patioRepository.findById(id);
-        if (patio.isPresent()) {
-            Patio patioSalvo = patioRepository.save(patio.get());
-            return patioMapper.patioToResponse(patioSalvo);
+        Optional<Patio> patioOptional = patioRepository.findById(id);
+        if (patioOptional.isPresent()) {
+            Patio patio = patioOptional.get();
+            patio.setLocalizacao(patioRequest.localizacao());
+            patio.setQuantidadeVagas(patioRequest.quantidadeVagas());
+
+            Patio patioAtualizado = patioRepository.save(patio);
+            return patioMapper.patioToResponse(patioAtualizado);
         }
+
         return null;
     }
 

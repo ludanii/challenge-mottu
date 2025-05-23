@@ -41,11 +41,18 @@ public class MotoService {
     }
 
     public MotoResponse update(MotoRequest motoRequest, Long id) {
-        Optional<Moto> moto = motoRepository.findById(id);
-        if (moto.isPresent()) {
-            Moto motoSalvo = motoRepository.save(moto.get());
-            return motoMapper.motoToResponse(motoSalvo);
+        Optional<Moto> motoOptional = motoRepository.findById(id);
+        if (motoOptional.isPresent()) {
+            Moto moto = motoOptional.get();
+            moto.setModelo(motoRequest.modelo());
+            moto.setPlaca(motoRequest.placa());
+            moto.setStatus(motoRequest.status());
+            moto.setSetor(motoRequest.setor());
+
+            Moto motoAtualizada = motoRepository.save(moto);
+            return motoMapper.motoToResponse(motoAtualizada);
         }
+
         return null;
     }
 

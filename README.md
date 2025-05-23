@@ -34,4 +34,20 @@ Este projeto é um sistema de gerenciamento de motocicletas em pátios. A aplica
 
 ## Como Rodar o Projeto
 
-- 
+- A API roda localmente, por padrão, na porta 8080. Use uma ferramenta como Postman ou Insomnia para testar os endpoints.
+
+### Endpoint: Clientes
+  - POST: http://localhost:8080/clientes
+  - JSON: 
+
+### Endpoint: Funcionários
+  - http://localhost:8080/funcionarios
+
+### Endpoint: Motos
+  - http://localhost:8080/motos
+
+### Endpoint: Pátios
+  - http://localhost:8080/patios
+
+
+

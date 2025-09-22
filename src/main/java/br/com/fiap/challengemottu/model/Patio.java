@@ -9,54 +9,55 @@ import java.util.List;
 public class Patio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPatio;
-    private String localizacao;
-    private Integer quantidadeVagas;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_funcionario")
-    private Funcionario funcionario;
+    private String logradouro;
+    private Integer capacidade;
+    private String nome;
 
-    @OneToMany(mappedBy = "patio")
-    private List<Moto> motos;
+    @ManyToMany(mappedBy = "patios")
+    private List<Funcionario> funcionarios;
 
-    public Long getIdPatio() {
-        return idPatio;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdPatio(Long idPatio) {
-        this.idPatio = idPatio;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getLocalizacao() {
-        return localizacao;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
-    public Integer getQuantidadeVagas() {
-        return quantidadeVagas;
+    public Integer getCapacidade() {
+        return capacidade;
     }
 
-    public void setQuantidadeVagas(Integer quantidadeVagas) {
-        this.quantidadeVagas = quantidadeVagas;
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public String getNome() {
+        return nome;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public List<Moto> getMotos() {
-        return motos;
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
     }
 
-    public void setMotos(List<Moto> motos) {
-        this.motos = motos;
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
     }
+
+    
+
 }

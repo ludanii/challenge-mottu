@@ -2,40 +2,47 @@ package br.com.fiap.challengemottu.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Table(name = "tab_motos")
 @Entity
 public class Moto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idMoto;
-    private String modelo;
+    private Long id;
+
     private String placa;
-    private String status; // disponível, alugada, em manutenção
-    private String setor; // bom, intermediário, ruim
+
+    @Enumerated(EnumType.STRING)
+    private Modelo modelo;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private Boolean disponibilidade;
+    private Integer vaga;
+    private String imagem;
 
     @ManyToOne
     @JoinColumn(name = "id_patio")
-    private Patio patio;
+    private Patio localizacao;
 
-    @OneToOne(mappedBy = "moto", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    public Long getIdMoto() {
-        return idMoto;
+    public enum Modelo {
+        E, POP, SPORT
     }
 
-    public void setIdMoto(Long idMoto) {
-        this.idMoto = idMoto;
+    public enum Status {
+        NOVA, SEMINOVA, USADA
     }
 
-    public String getModelo() {
-        return modelo;
+    public Long getId() {
+        return id;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPlaca() {
@@ -46,28 +53,52 @@ public class Moto {
         this.placa = placa;
     }
 
-    public String getStatus() {
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getSetor() {
-        return setor;
+    public Boolean getDisponibilidade() {
+        return disponibilidade;
     }
 
-    public void setSetor(String setor) {
-        this.setor = setor;
+    public void setDisponibilidade(Boolean disponibilidade) {
+        this.disponibilidade = disponibilidade;
     }
 
-    public Patio getPatio() {
-        return patio;
+    public Integer getVaga() {
+        return vaga;
     }
 
-    public void setPatio(Patio patio) {
-        this.patio = patio;
+    public void setVaga(Integer vaga) {
+        this.vaga = vaga;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public Patio getLocalizacao() {
+        return localizacao;
+    }
+
+    public void setLocalizacao(Patio localizacao) {
+        this.localizacao = localizacao;
     }
 
     public Cliente getCliente() {

@@ -6,11 +6,11 @@ import br.com.fiap.challengemottu.mapper.ClienteMapper;
 import br.com.fiap.challengemottu.model.Cliente;
 import br.com.fiap.challengemottu.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -23,11 +23,18 @@ public class ClienteService {
     }
 
     public ClienteResponse save(ClienteRequest clienteRequest) {
-        return clienteMapper.clienteToResponse(clienteRepository.save(clienteMapper.requestToCliente(clienteRequest)));
+        if (clienteRequest.idade() < 18) {
+            throw new IllegalArgumentException("O cliente deve ter mais de 18 anos.");
+        }
+        Cliente cliente = clienteMapper.requestToCliente(clienteRequest);
+        return clienteMapper.clienteToResponse(clienteRepository.save(cliente));
     }
 
-    public Page<ClienteResponse> findAll(Pageable pageable) {
-        return clienteRepository.findAll(pageable).map(clienteMapper::clienteToResponse);
+    public List<ClienteResponse> findAll() {
+        return clienteRepository.findAll()
+                .stream()
+                .map(clienteMapper::clienteToResponse)
+                .collect(Collectors.toList());
     }
 
     public Cliente findClienteById(Long id) {
@@ -36,11 +43,16 @@ public class ClienteService {
     }
 
     public ClienteResponse findById(Long id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        return cliente.map(clienteMapper::clienteToResponse).orElse(null);
+        return clienteRepository.findById(id)
+                .map(clienteMapper::clienteToResponse)
+                .orElse(null);
     }
 
     public ClienteResponse update(ClienteRequest clienteRequest, Long id) {
+        if (clienteRequest.idade() < 18) {
+            throw new IllegalArgumentException("O cliente deve ter mais de 18 anos.");
+        }
+
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteOptional.get();
@@ -48,7 +60,7 @@ public class ClienteService {
             cliente.setEmail(clienteRequest.email());
             cliente.setCpf(clienteRequest.cpf());
             cliente.setTelefone(clienteRequest.telefone());
-            cliente.setDataNascimento(clienteRequest.dataNascimento());
+            cliente.setIdade(clienteRequest.idade());
 
             Cliente clienteAtualizado = clienteRepository.save(cliente);
             return clienteMapper.clienteToResponse(clienteAtualizado);

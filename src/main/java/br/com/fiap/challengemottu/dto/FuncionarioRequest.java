@@ -1,11 +1,12 @@
 package br.com.fiap.challengemottu.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public record FuncionarioRequest(
-    @NotBlank(message = "O nome de usuário do funcionário é obrigatório.") String nomeUsuario,
-    @NotNull(message = "O email do funcionário é obrigatório.") String email,
-    @NotNull(message = "A senha do funcionário é obrigatório.") String senha
-) {
-}
+        @NotBlank(message = "O usuário do funcionário é obrigatório.") String usuario,
+        @NotBlank(message = "O nome do funcionário é obrigatório.") String nome,
+        @Email(message = "O email informado não é válido.") String email,
+        @NotBlank(message = "A senha do funcionário é obrigatória.") String senha
+        )
+{}

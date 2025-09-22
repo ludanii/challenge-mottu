@@ -12,17 +12,17 @@ public class ClienteMapper {
         cliente.setEmail(clienteRequest.email());
         cliente.setCpf(clienteRequest.cpf());
         cliente.setTelefone(clienteRequest.telefone());
-        cliente.setDataNascimento(clienteRequest.dataNascimento());
+        cliente.setIdade(clienteRequest.idade());
         return cliente;
     }
 
     public ClienteResponse clienteToResponse(Cliente cliente) {
         return new ClienteResponse(
-                cliente.getIdCliente(),
+                cliente.getId(),
                 cliente.getNome(),
                 cliente.getEmail(),
                 cliente.getCpf(),
                 cliente.getTelefone(),
-                cliente.getDataNascimento());
+                cliente.getIdade());
     }
 }

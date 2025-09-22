@@ -3,36 +3,34 @@ package br.com.fiap.challengemottu.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
-import java.util.List;
-
 @Table(name = "tab_funcionarios")
 @Entity
 public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idFuncionario;
-    private String nomeUsuario;
+    private Long id;
+
+    private String usuario;
+    private String senha;
+    private String nome;
     @Email
     private String email;
-    private String senha;
 
-    @OneToMany(mappedBy = "funcionario")
-    private List<Patio> patios;
 
-    public Long getIdFuncionario() {
-        return idFuncionario;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdFuncionario(Long idFuncionario) {
-        this.idFuncionario = idFuncionario;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getSenha() {
@@ -43,6 +41,14 @@ public class Funcionario {
         this.senha = senha;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -51,11 +57,4 @@ public class Funcionario {
         this.email = email;
     }
 
-    public List<Patio> getPatios() {
-        return patios;
-    }
-
-    public void setPatios(List<Patio> patios) {
-        this.patios = patios;
-    }
 }

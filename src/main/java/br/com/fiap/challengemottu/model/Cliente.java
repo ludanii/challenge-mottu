@@ -4,34 +4,32 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
-import java.time.LocalDate;
 import java.util.List;
-
 
 @Table(name = "tab_clientes")
 @Entity
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCliente;
+    private Long id;
+
     private String nome;
     @Email
     private String email;
     @CPF
     private String cpf;
     private String telefone;
-    private LocalDate dataNascimento;
+    private Integer idade;
 
-    @OneToOne
-    @JoinColumn(name = "id_moto")
-    private Moto moto;
+    @OneToMany(mappedBy = "cliente")
+    private List<Moto> motos;
 
-    public Long getIdCliente() {
-        return idCliente;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -66,20 +64,19 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
+    public Integer getIdade() {
+        return idade;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setIdade(Integer idade) {
+        this.idade = idade;
     }
 
-    public Moto getMoto() {
-        return moto;
+    public List<Moto> getMotos() {
+        return motos;
     }
 
-    public void setMoto(Moto moto) {
-        this.moto = moto;
+    public void setMotos(List<Moto> motos) {
+        this.motos = motos;
     }
-
 }

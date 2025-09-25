@@ -8,7 +8,7 @@ import br.com.fiap.challengemottu.model.Patio;
 
 public class MotoMapper {
 
-    public Moto requestToMoto(MotoRequest motoRequest, Patio patioId, Cliente clienteId) {
+    public Moto requestToMoto(MotoRequest motoRequest, Patio idPatio, Cliente idCliente) {
         Moto moto = new Moto();
         moto.setPlaca(motoRequest.placa());
         moto.setModelo(motoRequest.modelo());
@@ -16,12 +16,16 @@ public class MotoMapper {
         moto.setDisponibilidade(motoRequest.disponibilidade());
         moto.setVaga(motoRequest.vaga());
         moto.setImagem(motoRequest.imagem());
-        moto.setLocalizacao(patioId);
-        moto.setCliente(clienteId);
+        moto.setLocalizacao(idPatio);
+        moto.setCliente(idCliente);
         return moto;
     }
 
     public MotoResponse motoToResponse(Moto moto) {
+        Long clienteId = null;
+        if (moto.getCliente() != null) {
+            clienteId = moto.getCliente().getId();
+        }
         return new MotoResponse(
                 moto.getId(),
                 moto.getPlaca(),
@@ -31,6 +35,6 @@ public class MotoMapper {
                 moto.getVaga(),
                 moto.getImagem(),
                 moto.getLocalizacao().getId(),
-                moto.getCliente().getId());
+                clienteId);
     }
 }

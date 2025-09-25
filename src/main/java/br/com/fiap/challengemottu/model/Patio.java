@@ -15,7 +15,7 @@ public class Patio {
     private Integer capacidade;
     private String nome;
 
-    @ManyToMany(mappedBy = "patios")
+    @OneToMany(mappedBy = "patio")
     private List<Funcionario> funcionarios;
 
     public Long getId() {

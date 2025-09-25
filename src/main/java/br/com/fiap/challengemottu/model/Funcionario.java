@@ -16,6 +16,10 @@ public class Funcionario {
     @Email
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "patio_id") // FK apontando para tab_patios
+    private Patio patio;
+
 
     public Long getId() {
         return id;

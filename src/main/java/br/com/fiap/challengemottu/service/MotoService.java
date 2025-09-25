@@ -32,14 +32,14 @@ public class MotoService {
     }
 
     public MotoResponse save(MotoRequest motoRequest) {
-        Patio patio = patioRepository.findById(motoRequest.patioId())
-                .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.patioId()));
+        Patio patio = patioRepository.findById(motoRequest.idPatio())
+                .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
 
         Cliente cliente = null;
-        if (motoRequest.clienteId() != null) {
-            cliente = clienteRepository.findById(motoRequest.clienteId())
+        if (motoRequest.idCliente() != null) {
+            cliente = clienteRepository.findById(motoRequest.idCliente())
                     .orElseThrow(
-                            () -> new RuntimeException("Cliente não encontrado com ID: " + motoRequest.clienteId()));
+                            () -> new RuntimeException("Cliente não encontrado com ID: " + motoRequest.idCliente()));
         }
 
         Moto moto = motoMapper.requestToMoto(motoRequest, patio, cliente);
@@ -73,14 +73,14 @@ public class MotoService {
             moto.setVaga(motoRequest.vaga());
             moto.setImagem(motoRequest.imagem());
 
-            Patio patio = patioRepository.findById(motoRequest.patioId())
-                    .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.patioId()));
+            Patio patio = patioRepository.findById(motoRequest.idPatio())
+                    .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
             moto.setLocalizacao(patio);
 
-            if (motoRequest.clienteId() != null) {
-                Cliente cliente = clienteRepository.findById(motoRequest.clienteId())
+            if (motoRequest.idCliente() != null) {
+                Cliente cliente = clienteRepository.findById(motoRequest.idCliente())
                         .orElseThrow(() -> new RuntimeException(
-                                "Cliente não encontrado com ID: " + motoRequest.clienteId()));
+                                "Cliente não encontrado com ID: " + motoRequest.idCliente()));
                 moto.setCliente(cliente);
             } else {
                 moto.setCliente(null);

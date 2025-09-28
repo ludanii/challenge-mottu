@@ -6,18 +6,26 @@ import jakarta.validation.constraints.Email;
 @Table(name = "tab_funcionarios")
 @Entity
 public class Funcionario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String usuario;
+
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
     private String nome;
+
     @Email
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "patio_id") // FK apontando para tab_patios
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patio_id")
     private Patio patio;
 
 
@@ -59,6 +67,14 @@ public class Funcionario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Patio getPatio() {
+        return patio;
+    }
+
+    public void setPatio(Patio patio) {
+        this.patio = patio;
     }
 
 }

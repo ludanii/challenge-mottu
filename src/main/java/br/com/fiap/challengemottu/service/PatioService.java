@@ -7,12 +7,14 @@ import br.com.fiap.challengemottu.model.Funcionario;
 import br.com.fiap.challengemottu.model.Patio;
 import br.com.fiap.challengemottu.repository.FuncionarioRepository;
 import br.com.fiap.challengemottu.repository.PatioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PatioService {
@@ -35,10 +37,10 @@ public class PatioService {
     }
 
     public List<PatioResponse> findAll() {
-        List<Patio> patios = patioRepository.findAll();
-        return patios.stream()
+        return patioRepository.findAllWithFuncionarios()
+                .stream()
                 .map(patioMapper::patioToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public PatioResponse findById(Long id) {
@@ -46,21 +48,33 @@ public class PatioService {
         return patio.map(patioMapper::patioToResponse).orElse(null);
     }
 
+    @Transactional
     public PatioResponse update(PatioRequest patioRequest, Long id) {
-        Optional<Patio> patioOptional = patioRepository.findById(id);
-        if (patioOptional.isPresent()) {
-            Patio patio = patioOptional.get();
-            patio.setLogradouro(patioRequest.logradouro());
-            patio.setCapacidade(patioRequest.capacidade());
-            patio.setNome(patioRequest.nome());
+        Patio patio = patioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pátio não encontrado"));
 
-            List<Funcionario> funcionarios = funcionarioRepository.findAllById(patioRequest.funcionariosIds());
-            patio.setFuncionarios(funcionarios);
+        patio.setLogradouro(patioRequest.logradouro());
+        patio.setCapacidade(patioRequest.capacidade());
+        patio.setNome(patioRequest.nome());
 
-            Patio patioAtualizado = patioRepository.save(patio);
-            return patioMapper.patioToResponse(patioAtualizado);
+        List<Funcionario> funcionariosAtuais = new ArrayList<>(patio.getFuncionarios());
+
+        List<Funcionario> novosFuncionarios = funcionarioRepository.findAllById(patioRequest.funcionariosIds());
+
+        for (Funcionario f : funcionariosAtuais) {
+            if (!novosFuncionarios.contains(f)) {
+                f.setPatio(null);
+                funcionarioRepository.save(f);
+            }
         }
-        return null;
+        for (Funcionario f : novosFuncionarios) {
+            f.setPatio(patio);
+            funcionarioRepository.save(f);
+        }
+        patio.setFuncionarios(novosFuncionarios);
+
+        Patio salvo = patioRepository.save(patio);
+        return patioMapper.patioToResponse(salvo);
     }
 
     public boolean delete(Long id) {
@@ -71,4 +85,5 @@ public class PatioService {
         }
         return false;
     }
+
 }

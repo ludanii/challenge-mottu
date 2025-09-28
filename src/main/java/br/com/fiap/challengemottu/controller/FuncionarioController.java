@@ -48,7 +48,7 @@ public class FuncionarioController {
                         @ApiResponse(responseCode = "404", description = "Nenhum funcionário encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @GetMapping("/{id}")
-        public ResponseEntity<FuncionarioResponse> readFuncionario(@PathVariable Long id) {
+        public ResponseEntity<FuncionarioResponse> readFuncionario(@PathVariable("id") Long id) {
                 FuncionarioResponse funcionario = funcionarioService.findById(id);
                 if (funcionario == null) {
                         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,7 +62,7 @@ public class FuncionarioController {
                         @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @PutMapping("/{id}")
-        public ResponseEntity<FuncionarioResponse> updateFuncionario(@PathVariable Long id,
+        public ResponseEntity<FuncionarioResponse> updateFuncionario(@PathVariable("id") Long id,
                         @RequestBody FuncionarioRequest funcionarioRequest) {
                 FuncionarioResponse funcionario = funcionarioService.update(funcionarioRequest, id);
                 if (funcionario == null) {
@@ -77,7 +77,7 @@ public class FuncionarioController {
                         @ApiResponse(responseCode = "400", description = "Nenhum funcionário encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteFuncionario(@PathVariable Long id) {
+        public ResponseEntity<Void> deleteFuncionario(@PathVariable("id") Long id) {
                 boolean salvo = funcionarioService.delete(id);
                 if (!salvo) {
                         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

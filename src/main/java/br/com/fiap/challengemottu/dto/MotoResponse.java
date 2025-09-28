@@ -10,7 +10,6 @@ public record MotoResponse(
         Status status,
         Boolean disponibilidade,
         Integer vaga,
-        String imagem,
         Long idPatio,
         Long idCliente) {
 }

@@ -9,6 +9,7 @@ public class Moto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String placa;
 
     @Enumerated(EnumType.STRING)
@@ -19,7 +20,6 @@ public class Moto {
 
     private Boolean disponibilidade;
     private Integer vaga;
-    private String imagem;
 
     @ManyToOne
     @JoinColumn(name = "id_patio")
@@ -83,14 +83,6 @@ public class Moto {
 
     public void setVaga(Integer vaga) {
         this.vaga = vaga;
-    }
-
-    public String getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
     }
 
     public Patio getLocalizacao() {

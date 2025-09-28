@@ -16,11 +16,14 @@ public class FuncionarioMapper {
     }
 
     public FuncionarioResponse funcionarioToResponse(Funcionario funcionario) {
+        Long patioId = funcionario.getPatio() != null ? funcionario.getPatio().getId() : null;
         return new FuncionarioResponse(
                 funcionario.getId(),
-                funcionario.getUsuario(),
                 funcionario.getNome(),
+                funcionario.getUsuario(),
                 funcionario.getEmail(),
-                funcionario.getSenha());
+                funcionario.getSenha(),
+                patioId
+        );
     }
 }

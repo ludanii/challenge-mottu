@@ -16,8 +16,12 @@ public class Cliente {
     private String nome;
     @Email
     private String email;
+    
     @CPF
+    @Column(unique = true)
     private String cpf;
+
+    @Column(unique = true)
     private String telefone;
     private Integer idade;
 
@@ -79,4 +83,6 @@ public class Cliente {
     public void setMotos(List<Moto> motos) {
         this.motos = motos;
     }
+
+    
 }

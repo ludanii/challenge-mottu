@@ -6,7 +6,6 @@ import br.com.fiap.challengemottu.model.Funcionario;
 import br.com.fiap.challengemottu.model.Patio;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PatioMapper {
 
@@ -20,13 +19,10 @@ public class PatioMapper {
     }
 
     public PatioResponse patioToResponse(Patio patio) {
-        List<Long> funcionariosIds = null;
-        if (patio.getFuncionarios() != null) {
-            funcionariosIds = patio.getFuncionarios()
-                    .stream()
-                    .map(Funcionario::getId)
-                    .collect(Collectors.toList());
-        }
+        List<Long> funcionariosIds = patio.getFuncionarios()
+                .stream()
+                .map(Funcionario::getId)
+                .toList();
 
         return new PatioResponse(
                 patio.getId(),

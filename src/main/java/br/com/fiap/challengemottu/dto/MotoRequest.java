@@ -12,7 +12,6 @@ public record MotoRequest(
         @NotNull(message = "O status da moto é obrigatório.") Status status,
         Boolean disponibilidade,
         Integer vaga,
-        String imagem,
         @NotNull(message = "A localização da moto é obrigatório.") Long idPatio,
         Long idCliente) {
 }

@@ -2,6 +2,7 @@ package br.com.fiap.challengemottu.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "tab_patios")
@@ -11,12 +12,16 @@ public class Patio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String logradouro;
+
     private Integer capacidade;
+    
+    @Column(unique = true)
     private String nome;
 
-    @OneToMany(mappedBy = "patio")
-    private List<Funcionario> funcionarios;
+    @OneToMany(mappedBy = "patio", cascade = CascadeType.ALL)
+    private List<Funcionario> funcionarios = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -56,8 +61,6 @@ public class Patio {
 
     public void setFuncionarios(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
-    }
-
-    
+    }    
 
 }

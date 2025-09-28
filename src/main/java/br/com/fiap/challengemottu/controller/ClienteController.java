@@ -51,7 +51,7 @@ public class ClienteController {
                         @ApiResponse(responseCode = "404", description = "Nenhum cliente encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @GetMapping("/{id}")
-        public ResponseEntity<ClienteResponse> readCliente(@PathVariable Long id) {
+        public ResponseEntity<ClienteResponse> readCliente(@PathVariable("id") Long id) {
                 ClienteResponse cliente = clienteService.findById(id);
                 if (cliente == null) {
                         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class ClienteController {
                         @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @PutMapping("/{id}")
-        public ResponseEntity<ClienteResponse> updateCliente(@PathVariable Long id,
+        public ResponseEntity<ClienteResponse> updateCliente(@PathVariable("id") Long id,
                         @Valid @RequestBody ClienteRequest clienteRequest) {
                 ClienteResponse cliente = clienteService.update(clienteRequest, id);
                 if (cliente == null) {
@@ -80,7 +80,7 @@ public class ClienteController {
                         @ApiResponse(responseCode = "400", description = "Nenhum cliente encontrado para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
+        public ResponseEntity<Void> deleteCliente(@PathVariable("id") Long id) {
                 boolean excluido = clienteService.delete(id);
                 if (!excluido) {
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

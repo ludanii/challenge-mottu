@@ -27,7 +27,7 @@ public class FuncionarioService {
     }
 
     public List<FuncionarioResponse> findAll() {
-        return funcionarioRepository.findAll()
+        return funcionarioRepository.findAllWithPatio()
                 .stream()
                 .map(funcionarioMapper::funcionarioToResponse)
                 .toList();

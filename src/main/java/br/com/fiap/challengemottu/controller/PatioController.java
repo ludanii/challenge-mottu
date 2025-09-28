@@ -36,7 +36,7 @@ public class PatioController {
 
     @Operation(summary = "Retorna um pátio por ID")
     @GetMapping("/{id}")
-    public ResponseEntity<PatioResponse> readPatio(@PathVariable Long id) {
+    public ResponseEntity<PatioResponse> readPatio(@PathVariable("id") Long id) {
         PatioResponse patio = patioService.findById(id);
         if (patio == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,7 +46,8 @@ public class PatioController {
 
     @Operation(summary = "Atualiza um pátio existente")
     @PutMapping("/{id}")
-    public ResponseEntity<PatioResponse> updatePatio(@PathVariable Long id,
+    public ResponseEntity<PatioResponse> updatePatio(
+            @PathVariable("id") Long id,
             @Valid @RequestBody PatioRequest patioRequest) {
         PatioResponse patio = patioService.update(patioRequest, id);
         if (patio == null) {
@@ -57,7 +58,7 @@ public class PatioController {
 
     @Operation(summary = "Exclui um pátio por ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatio(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePatio(@PathVariable("id") Long id) {
         boolean deleted = patioService.delete(id);
         if (!deleted) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

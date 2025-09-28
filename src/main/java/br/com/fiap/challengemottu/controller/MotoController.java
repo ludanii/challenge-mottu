@@ -62,7 +62,7 @@ public class MotoController {
         })
         @PutMapping("/{id}")
         public ResponseEntity<MotoResponse> updateMoto(
-                        @PathVariable Long id,
+                        @PathVariable("id") Long id,
                         @Valid @RequestBody MotoRequest motoRequest) {
 
                 MotoResponse moto = motoService.update(motoRequest, id);
@@ -79,7 +79,7 @@ public class MotoController {
                         @ApiResponse(responseCode = "400", description = "Nenhuma moto encontrada para o ID fornecido!", content = @Content(schema = @Schema()))
         })
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteMoto(@PathVariable Long id) {
+        public ResponseEntity<Void> deleteMoto(@PathVariable("id") Long id) {
                 boolean salvo = motoService.delete(id);
                 if (!salvo) {
                         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

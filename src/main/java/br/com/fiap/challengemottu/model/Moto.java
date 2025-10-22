@@ -18,6 +18,9 @@ public class Moto {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
+    private Condicao condicao;
+
     private Boolean disponibilidade;
     private Integer vaga;
 
@@ -33,8 +36,12 @@ public class Moto {
         E, POP, SPORT
     }
 
-    public enum Status {
+    public enum Condicao {
         NOVA, SEMINOVA, USADA
+    }
+
+    public enum Status {
+        MANUTENCAO, EM_USO, PARADA
     }
 
     public Long getId() {
@@ -99,6 +106,14 @@ public class Moto {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Condicao getCondicao() {
+        return condicao;
+    }
+
+    public void setCondicao(Condicao condicao) {
+        this.condicao = condicao;
     }
 
 }

@@ -11,6 +11,9 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
+
     @Column(nullable = false, unique = true)
     private String usuario;
 
@@ -28,6 +31,9 @@ public class Funcionario {
     @JoinColumn(name = "patio_id")
     private Patio patio;
 
+    public enum Tipo {
+        GERENTE, FUNCIONARIO
+    }
 
     public Long getId() {
         return id;
@@ -77,4 +83,12 @@ public class Funcionario {
         this.patio = patio;
     }
 
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+    
 }

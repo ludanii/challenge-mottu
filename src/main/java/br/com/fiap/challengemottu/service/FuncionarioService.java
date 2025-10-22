@@ -2,27 +2,41 @@ package br.com.fiap.challengemottu.service;
 
 import br.com.fiap.challengemottu.dto.FuncionarioRequest;
 import br.com.fiap.challengemottu.dto.FuncionarioResponse;
+import br.com.fiap.challengemottu.exception.CredenciaisInvalidasException;
+import br.com.fiap.challengemottu.exception.RecursoNaoEncontradoException;
 import br.com.fiap.challengemottu.mapper.FuncionarioMapper;
 import br.com.fiap.challengemottu.model.Funcionario;
+import br.com.fiap.challengemottu.model.Patio;
 import br.com.fiap.challengemottu.repository.FuncionarioRepository;
+import br.com.fiap.challengemottu.repository.PatioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
+    private final PatioRepository patioRepository;
     private final FuncionarioMapper funcionarioMapper = new FuncionarioMapper();
 
     @Autowired
-    public FuncionarioService(FuncionarioRepository funcionarioRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, PatioRepository patioRepository) {
         this.funcionarioRepository = funcionarioRepository;
+        this.patioRepository = patioRepository;
     }
 
     public FuncionarioResponse save(FuncionarioRequest funcionarioRequest) {
-        Funcionario funcionario = funcionarioMapper.requestToFuncionario(funcionarioRequest);
+        Patio patio = patioRepository
+        .findById(funcionarioRequest.patio())
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Pátio não encontrado"));
+        Funcionario funcionario = funcionarioMapper.requestToFuncionario(funcionarioRequest, patio);
+        funcionario.setSenha(passwordEncoder.encode(funcionarioRequest.senha()));
         return funcionarioMapper.funcionarioToResponse(funcionarioRepository.save(funcionario));
     }
 
@@ -33,40 +47,48 @@ public class FuncionarioService {
                 .toList();
     }
 
-    public Funcionario findFuncionarioById(Long id) {
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
-        return funcionario.orElse(null);
-    }
-
     public FuncionarioResponse findById(Long id) {
         return funcionarioRepository.findById(id)
                 .map(funcionarioMapper::funcionarioToResponse)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Funcionário não encontrado com o ID: " + id));
     }
 
     public FuncionarioResponse update(FuncionarioRequest funcionarioRequest, Long id) {
-        Optional<Funcionario> funcionarioOptional = funcionarioRepository.findById(id);
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Funcionário não encontrado com o ID: " + id));
 
-        if (funcionarioOptional.isPresent()) {
-            Funcionario funcionario = funcionarioOptional.get();
-            funcionario.setUsuario(funcionarioRequest.usuario());
-            funcionario.setNome(funcionarioRequest.nome());
-            funcionario.setEmail(funcionarioRequest.email());
-            funcionario.setSenha(funcionarioRequest.senha());
+        Patio patio = patioRepository.findById(funcionarioRequest.patio())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pátio não encontrado"));
 
-            Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
-            return funcionarioMapper.funcionarioToResponse(funcionarioAtualizado);
-        }
+        funcionario.setUsuario(funcionarioRequest.usuario());
+        funcionario.setNome(funcionarioRequest.nome());
+        funcionario.setEmail(funcionarioRequest.email());
+        funcionario.setSenha(passwordEncoder.encode(funcionarioRequest.senha()));
+        funcionario.setTipo(funcionarioRequest.tipo());
+        funcionario.setPatio(patio);
 
-        return null;
+        return funcionarioMapper.funcionarioToResponse(funcionarioRepository.save(funcionario));
+
     }
 
-    public boolean delete(Long id) {
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
-        if (funcionario.isPresent()) {
-            funcionarioRepository.delete(funcionario.get());
-            return true;
+    public void delete(Long id) {
+        if (!funcionarioRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Funcionário não encontrado com o ID: " + id);
         }
-        return false;
+        funcionarioRepository.deleteById(id);
+    }
+
+    public FuncionarioResponse login(String usuario, String senha, String tipo) {
+        Funcionario funcionario = funcionarioRepository.findByUsuario(usuario)
+                .orElseThrow(() -> new CredenciaisInvalidasException("Credenciais inválidas"));
+        Funcionario.Tipo tipoEnum = Funcionario.Tipo.valueOf(tipo);
+
+        if (!funcionario.getTipo().equals(tipoEnum)) {
+            throw new CredenciaisInvalidasException("Credenciais inválidas");
+        }
+        if (!passwordEncoder.matches(senha, funcionario.getSenha())) {
+            throw new CredenciaisInvalidasException("Credenciais inválidas");
+        }
+        return funcionarioMapper.funcionarioToResponse(funcionario);
     }
 }

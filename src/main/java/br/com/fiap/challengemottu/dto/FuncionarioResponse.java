@@ -1,11 +1,13 @@
 package br.com.fiap.challengemottu.dto;
 
+import br.com.fiap.challengemottu.model.Funcionario.Tipo;
+
 public record FuncionarioResponse(
                 Long id,
                 String nome,
                 String usuario,
                 String email,
-                String senha,
+                Tipo tipo,
                 Long patioId
 ) {
 }

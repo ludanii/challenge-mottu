@@ -21,42 +21,35 @@ public class PatioController {
     @Autowired
     private PatioService patioService;
 
-    @Operation(summary = "Cria um novo pátio")
     @PostMapping
     public ResponseEntity<PatioResponse> createPatio(@Valid @RequestBody PatioRequest patio) {
-        return new ResponseEntity<>(patioService.save(patio), HttpStatus.CREATED);
+        patio = patioService.save(patio);
+        return new ResponseEntity<>(patio, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Lista todos os pátios")
     @GetMapping
     public ResponseEntity<List<PatioResponse>> readPatios() {
-        List<PatioResponse> patios = patioService.findAll();
-        return new ResponseEntity<>(patios, HttpStatus.OK);
+        return ResponseEntity.ok(patioService.findAll());
     }
 
-    @Operation(summary = "Retorna um pátio por ID")
     @GetMapping("/{id}")
     public ResponseEntity<PatioResponse> readPatio(@PathVariable("id") Long id) {
         PatioResponse patio = patioService.findById(id);
-        if (patio == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(patio, HttpStatus.OK);
+        return ResponseEntity.ok(patio);
     }
 
-    @Operation(summary = "Atualiza um pátio existente")
     @PutMapping("/{id}")
     public ResponseEntity<PatioResponse> updatePatio(
             @PathVariable("id") Long id,
             @Valid @RequestBody PatioRequest patioRequest) {
         PatioResponse patio = patioService.update(patioRequest, id);
-        if (patio == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(patio, HttpStatus.OK);
+        return ResponseEntity.ok(patio);
     }
 
-    @Operation(summary = "Exclui um pátio por ID")
+    @ApiResponses(value = {
+                        @ApiResponse(responseCode = "204", description = "Funcionário deletado com sucesso!"),
+                        @ApiResponse(responseCode = "404", description = "Funcionário não encontrado para o ID fornecido!")
+        })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatio(@PathVariable("id") Long id) {
         boolean deleted = patioService.delete(id);

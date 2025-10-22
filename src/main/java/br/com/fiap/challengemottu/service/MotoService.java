@@ -71,6 +71,7 @@ public class MotoService {
             moto.setStatus(motoRequest.status());
             moto.setDisponibilidade(motoRequest.disponibilidade());
             moto.setVaga(motoRequest.vaga());
+            moto.setCondicao(motoRequest.condicao());
 
             Patio patio = patioRepository.findById(motoRequest.idPatio())
                     .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.idPatio()));

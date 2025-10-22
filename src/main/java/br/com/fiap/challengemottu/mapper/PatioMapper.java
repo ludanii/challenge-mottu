@@ -9,12 +9,11 @@ import java.util.List;
 
 public class PatioMapper {
 
-    public Patio requestToPatio(PatioRequest patioRequest, List<Funcionario> funcionarios) {
+    public Patio requestToPatio(PatioRequest patioRequest) {
         Patio patio = new Patio();
         patio.setLogradouro(patioRequest.logradouro());
         patio.setCapacidade(patioRequest.capacidade());
         patio.setNome(patioRequest.nome());
-        patio.setFuncionarios(funcionarios);
         return patio;
     }
 
@@ -23,7 +22,6 @@ public class PatioMapper {
                 .stream()
                 .map(Funcionario::getId)
                 .toList();
-
         return new PatioResponse(
                 patio.getId(),
                 patio.getLogradouro(),

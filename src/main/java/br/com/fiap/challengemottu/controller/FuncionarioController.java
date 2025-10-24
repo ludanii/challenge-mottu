@@ -3,8 +3,8 @@ package br.com.fiap.challengemottu.controller;
 import br.com.fiap.challengemottu.dto.FuncionarioRequest;
 import br.com.fiap.challengemottu.dto.FuncionarioResponse;
 import br.com.fiap.challengemottu.dto.LoginRequest;
+import br.com.fiap.challengemottu.dto.LoginResponse;
 import br.com.fiap.challengemottu.service.FuncionarioService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,8 +57,8 @@ public class FuncionarioController {
         }
 
         @PostMapping("/login")
-        public ResponseEntity<FuncionarioResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-                FuncionarioResponse response = funcionarioService.login(
+        public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+                LoginResponse response = funcionarioService.login(
                                 loginRequest.usuario(),
                                 loginRequest.senha(),
                                 loginRequest.tipo());

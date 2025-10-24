@@ -2,6 +2,8 @@ package br.com.fiap.challengemottu.service;
 
 import br.com.fiap.challengemottu.dto.ClienteRequest;
 import br.com.fiap.challengemottu.dto.ClienteResponse;
+import br.com.fiap.challengemottu.exception.RecursoNaoEncontradoException;
+import br.com.fiap.challengemottu.exception.RegraDeNegocioVioladaException;
 import br.com.fiap.challengemottu.mapper.ClienteMapper;
 import br.com.fiap.challengemottu.model.Cliente;
 import br.com.fiap.challengemottu.repository.ClienteRepository;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -22,10 +22,20 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public ClienteResponse save(ClienteRequest clienteRequest) {
+    private void validarDadosCliente(ClienteRequest clienteRequest, Long clienteId) {
         if (clienteRequest.idade() < 18) {
-            throw new IllegalArgumentException("O cliente deve ter mais de 18 anos.");
+            throw new RegraDeNegocioVioladaException("O cliente deve ter mais de 18 anos.");
         }
+        if (clienteRepository.existsByCpfAndIdNot(clienteRequest.cpf(), clienteId)) {
+            throw new RegraDeNegocioVioladaException("Já existe um cliente com este CPF.");
+        }
+        if (clienteRepository.existsByEmailAndIdNot(clienteRequest.email(), clienteId)) {
+            throw new RegraDeNegocioVioladaException("Já existe um cliente com este e-mail.");
+        }
+    }
+
+    public ClienteResponse save(ClienteRequest clienteRequest) {
+        validarDadosCliente(clienteRequest, null);
         Cliente cliente = clienteMapper.requestToCliente(clienteRequest);
         return clienteMapper.clienteToResponse(clienteRepository.save(cliente));
     }
@@ -34,47 +44,33 @@ public class ClienteService {
         return clienteRepository.findAll()
                 .stream()
                 .map(clienteMapper::clienteToResponse)
-                .collect(Collectors.toList());
-    }
-
-    public Cliente findClienteById(Long id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        return cliente.orElse(null);
+                .toList();
     }
 
     public ClienteResponse findById(Long id) {
         return clienteRepository.findById(id)
                 .map(clienteMapper::clienteToResponse)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado com o ID: " + id));
     }
 
     public ClienteResponse update(ClienteRequest clienteRequest, Long id) {
-        if (clienteRequest.idade() < 18) {
-            throw new IllegalArgumentException("O cliente deve ter mais de 18 anos.");
-        }
+        validarDadosCliente(clienteRequest, id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado com o ID: " + id));
 
-        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-        if (clienteOptional.isPresent()) {
-            Cliente cliente = clienteOptional.get();
-            cliente.setNome(clienteRequest.nome());
-            cliente.setEmail(clienteRequest.email());
-            cliente.setCpf(clienteRequest.cpf());
-            cliente.setTelefone(clienteRequest.telefone());
-            cliente.setIdade(clienteRequest.idade());
+        cliente.setNome(clienteRequest.nome());
+        cliente.setEmail(clienteRequest.email());
+        cliente.setCpf(clienteRequest.cpf());
+        cliente.setTelefone(clienteRequest.telefone());
+        cliente.setIdade(clienteRequest.idade());
 
-            Cliente clienteAtualizado = clienteRepository.save(cliente);
-            return clienteMapper.clienteToResponse(clienteAtualizado);
-        }
-
-        return null;
+        return clienteMapper.clienteToResponse(clienteRepository.save(cliente));
     }
 
-    public boolean delete(Long id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if (cliente.isPresent()) {
-            clienteRepository.delete(cliente.get());
-            return true;
+    public void delete(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Cliente não encontrado com o ID: " + id);
         }
-        return false;
+        clienteRepository.deleteById(id);
     }
 }

@@ -3,6 +3,7 @@ package br.com.fiap.challengemottu.service;
 import br.com.fiap.challengemottu.dto.PatioRequest;
 import br.com.fiap.challengemottu.dto.PatioResponse;
 import br.com.fiap.challengemottu.exception.RecursoNaoEncontradoException;
+import br.com.fiap.challengemottu.exception.RegraDeNegocioVioladaException;
 import br.com.fiap.challengemottu.mapper.PatioMapper;
 import br.com.fiap.challengemottu.model.Patio;
 import br.com.fiap.challengemottu.repository.PatioRepository;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PatioService {
@@ -23,14 +23,20 @@ public class PatioService {
     public PatioService(PatioRepository patioRepository) {
         this.patioRepository = patioRepository;
     }
+     private void validarUnicidade(PatioRequest patioRequest, Long patioId) {
+        if (patioRepository.existsByLogradouroAndIdNot(patioRequest.logradouro(), patioId)) {
+            throw new RegraDeNegocioVioladaException("Já existe um pátio com este logradouro.");
+        }
+    }
 
     public PatioResponse save(PatioRequest patioRequest) {
+        validarUnicidade(patioRequest, null);
         Patio patio = patioMapper.requestToPatio(patioRequest);
         return patioMapper.patioToResponse(patioRepository.save(patio));
     }
 
     public List<PatioResponse> findAll() {
-        return patioRepository.findAllWithFuncionarios()
+        return patioRepository.findAll()
                 .stream()
                 .map(patioMapper::patioToResponse)
                 .toList();
@@ -43,6 +49,7 @@ public class PatioService {
     }
 
     public PatioResponse update(PatioRequest patioRequest, Long id) {
+        validarUnicidade(patioRequest, id);
         Patio patio = patioRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Pátio não encontrado com o ID: " + id));
 

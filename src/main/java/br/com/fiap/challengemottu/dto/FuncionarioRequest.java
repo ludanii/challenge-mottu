@@ -11,6 +11,6 @@ public record FuncionarioRequest(
         @NotBlank(message = "O nome do funcionário é obrigatório.") @Size(min = 3, message = "O nome deve ter no mínimo 3 caracteres.") String nome,
         @Email(message = "O email informado não é válido.") @NotBlank(message = "O email do funcionário é obrigatório.") String email,
         @NotNull(message = "O tipo do funcionário é obrigatório.") Tipo tipo,
-        @NotNull(message = "O ID do pátio é obrigatório.") Long patio,
+        @NotNull(message = "O ID do pátio é obrigatório.") Long idPatio,
         @NotBlank(message = "A senha do funcionário é obrigatória.") @Size(min = 4, message = "A senha deve ter no mínimo 4 caracteres.") String senha) {
 }

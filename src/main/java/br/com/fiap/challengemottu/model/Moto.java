@@ -26,7 +26,7 @@ public class Moto {
 
     @ManyToOne
     @JoinColumn(name = "id_patio")
-    private Patio localizacao;
+    private Patio patio;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -92,12 +92,12 @@ public class Moto {
         this.vaga = vaga;
     }
 
-    public Patio getLocalizacao() {
-        return localizacao;
+    public Patio getPatio() {
+        return patio;
     }
 
-    public void setLocalizacao(Patio localizacao) {
-        this.localizacao = localizacao;
+    public void setPatio(Patio patio) {
+        this.patio = patio;
     }
 
     public Cliente getCliente() {

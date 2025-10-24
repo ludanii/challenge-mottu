@@ -23,6 +23,9 @@ public class Patio {
     @OneToMany(mappedBy = "patio", cascade = CascadeType.ALL)
     private List<Funcionario> funcionarios = new ArrayList<>();
 
+    @OneToMany(mappedBy = "patio", cascade = CascadeType.ALL)
+    private List<Moto> motos = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -61,6 +64,13 @@ public class Patio {
 
     public void setFuncionarios(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
-    }    
+    }
 
+    public List<Moto> getMotos() {
+        return motos;
+    }
+
+    public void setMotos(List<Moto> motos) {
+        this.motos = motos;
+    }
 }

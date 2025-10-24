@@ -15,7 +15,7 @@ public class MotoMapper {
         moto.setStatus(motoRequest.status());
         moto.setDisponibilidade(motoRequest.disponibilidade());
         moto.setVaga(motoRequest.vaga());
-        moto.setLocalizacao(idPatio);
+        moto.setPatio(idPatio);
         moto.setCliente(idCliente);
         moto.setCondicao(motoRequest.condicao());
         return moto;
@@ -33,7 +33,7 @@ public class MotoMapper {
                 moto.getStatus(),
                 moto.getDisponibilidade(),
                 moto.getVaga(),
-                moto.getLocalizacao().getId(),
+                moto.getPatio().getId(),
                 clienteId,
                 moto.getCondicao());
     }

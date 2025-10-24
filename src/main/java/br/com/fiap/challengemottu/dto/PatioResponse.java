@@ -7,5 +7,6 @@ public record PatioResponse(
                 String logradouro,
                 Integer capacidade,
                 String nome,
-                List<Long> funcionariosIds) {
+                List<Long> funcionariosIds,
+                List<Long> motosIds) {
 }

@@ -8,6 +8,6 @@ public record FuncionarioResponse(
                 String usuario,
                 String email,
                 Tipo tipo,
-                Long patioId
+                Long idPatio
 ) {
 }

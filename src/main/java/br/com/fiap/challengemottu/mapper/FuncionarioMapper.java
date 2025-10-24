@@ -4,10 +4,12 @@ import java.util.Optional;
 
 import br.com.fiap.challengemottu.dto.FuncionarioRequest;
 import br.com.fiap.challengemottu.dto.FuncionarioResponse;
+import br.com.fiap.challengemottu.dto.LoginResponse;
 import br.com.fiap.challengemottu.model.Funcionario;
 import br.com.fiap.challengemottu.model.Patio;
 
 public class FuncionarioMapper {
+    private final PatioMapper patioMapper = new PatioMapper();
 
     public Funcionario requestToFuncionario(FuncionarioRequest funcionarioRequest, Patio patio) {
         Funcionario funcionario = new Funcionario();
@@ -21,7 +23,7 @@ public class FuncionarioMapper {
     }
 
     public FuncionarioResponse funcionarioToResponse(Funcionario funcionario) {
-        Long patioId = Optional.ofNullable(funcionario.getPatio())
+        Long idPatio = Optional.ofNullable(funcionario.getPatio())
                 .map(Patio::getId)
                 .orElse(null);
         return new FuncionarioResponse(
@@ -30,6 +32,14 @@ public class FuncionarioMapper {
                 funcionario.getUsuario(),
                 funcionario.getEmail(),
                 funcionario.getTipo(),
-                patioId);
+                idPatio);
+    }
+
+    public LoginResponse loginToResponse(Funcionario funcionario, Patio patio, Boolean isGerente) {
+        return new LoginResponse(
+                funcionarioToResponse(funcionario),
+                patioMapper.patioToResponse(patio),
+                isGerente
+        );
     }
 }

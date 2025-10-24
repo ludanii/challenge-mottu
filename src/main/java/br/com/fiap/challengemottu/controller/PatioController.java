@@ -3,8 +3,9 @@ package br.com.fiap.challengemottu.controller;
 import br.com.fiap.challengemottu.dto.PatioRequest;
 import br.com.fiap.challengemottu.dto.PatioResponse;
 import br.com.fiap.challengemottu.service.PatioService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class PatioController {
 
     @PostMapping
     public ResponseEntity<PatioResponse> createPatio(@Valid @RequestBody PatioRequest patio) {
-        patio = patioService.save(patio);
-        return new ResponseEntity<>(patio, HttpStatus.CREATED);
+        PatioResponse response = patioService.save(patio);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -47,15 +48,12 @@ public class PatioController {
     }
 
     @ApiResponses(value = {
-                        @ApiResponse(responseCode = "204", description = "Funcionário deletado com sucesso!"),
-                        @ApiResponse(responseCode = "404", description = "Funcionário não encontrado para o ID fornecido!")
-        })
+            @ApiResponse(responseCode = "204", description = "Funcionário deletado com sucesso!"),
+            @ApiResponse(responseCode = "404", description = "Funcionário não encontrado para o ID fornecido!")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatio(@PathVariable("id") Long id) {
-        boolean deleted = patioService.delete(id);
-        if (!deleted) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        patioService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

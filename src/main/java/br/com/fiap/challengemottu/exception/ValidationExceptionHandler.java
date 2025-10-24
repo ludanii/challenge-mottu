@@ -33,4 +33,10 @@ public class ValidationExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
+
+    @ExceptionHandler(RegraDeNegocioVioladaException.class)
+    public ResponseEntity<Map<String, String>> handleRegraDeNegocioViolada(RegraDeNegocioVioladaException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", ex.getMessage()));
+    }
 }

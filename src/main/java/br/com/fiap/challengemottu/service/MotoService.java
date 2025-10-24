@@ -2,6 +2,8 @@ package br.com.fiap.challengemottu.service;
 
 import br.com.fiap.challengemottu.dto.MotoRequest;
 import br.com.fiap.challengemottu.dto.MotoResponse;
+import br.com.fiap.challengemottu.exception.RecursoNaoEncontradoException;
+import br.com.fiap.challengemottu.exception.RegraDeNegocioVioladaException;
 import br.com.fiap.challengemottu.mapper.MotoMapper;
 import br.com.fiap.challengemottu.model.Cliente;
 import br.com.fiap.challengemottu.model.Moto;
@@ -13,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MotoService {
@@ -31,20 +32,26 @@ public class MotoService {
         this.clienteRepository = clienteRepository;
     }
 
+     private void validarUnicidade(MotoRequest motoRequest, Long motoId) {
+        if (motoRepository.existsByPlacaAndIdNot(motoRequest.placa(), motoId)) {
+            throw new RegraDeNegocioVioladaException("Já existe uma moto com esta placa.");
+        }
+    }
+
     public MotoResponse save(MotoRequest motoRequest) {
-        Patio patio = patioRepository.findById(motoRequest.idPatio())
-                .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
+        validarUnicidade(motoRequest, null);
+        Patio patio = patioRepository.findById(motoRequest.idPatio()).orElseThrow(
+                () -> new RecursoNaoEncontradoException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
 
         Cliente cliente = null;
         if (motoRequest.idCliente() != null) {
-            cliente = clienteRepository.findById(motoRequest.idCliente())
-                    .orElseThrow(
-                            () -> new RuntimeException("Cliente não encontrado com ID: " + motoRequest.idCliente()));
+            cliente = clienteRepository.findById(motoRequest.idCliente()).orElseThrow(
+                    () -> new RecursoNaoEncontradoException(
+                            "Cliente não encontrado com ID: " + motoRequest.idCliente()));
         }
 
         Moto moto = motoMapper.requestToMoto(motoRequest, patio, cliente);
-        Moto savedMoto = motoRepository.save(moto);
-        return motoMapper.motoToResponse(savedMoto);
+        return motoMapper.motoToResponse(motoRepository.save(moto));
     }
 
     public List<MotoResponse> findAll() {
@@ -57,48 +64,41 @@ public class MotoService {
     public MotoResponse findById(Long id) {
         return motoRepository.findById(id)
                 .map(motoMapper::motoToResponse)
-                .orElse(null);
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Moto não encontrada com o ID: " + id));
     }
 
     public MotoResponse update(MotoRequest motoRequest, Long id) {
-        Optional<Moto> motoOptional = motoRepository.findById(id);
+        validarUnicidade(motoRequest, id);
+        Moto moto = motoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Moto não encontrada com o ID: " + id));
 
-        if (motoOptional.isPresent()) {
-            Moto moto = motoOptional.get();
+        Patio patio = patioRepository.findById(motoRequest.idPatio()).orElseThrow(
+                () -> new RecursoNaoEncontradoException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
 
-            moto.setPlaca(motoRequest.placa());
-            moto.setModelo(motoRequest.modelo());
-            moto.setStatus(motoRequest.status());
-            moto.setDisponibilidade(motoRequest.disponibilidade());
-            moto.setVaga(motoRequest.vaga());
-            moto.setCondicao(motoRequest.condicao());
-
-            Patio patio = patioRepository.findById(motoRequest.idPatio())
-                    .orElseThrow(() -> new RuntimeException("Pátio não encontrado com ID: " + motoRequest.idPatio()));
-            moto.setLocalizacao(patio);
-
-            if (motoRequest.idCliente() != null) {
-                Cliente cliente = clienteRepository.findById(motoRequest.idCliente())
-                        .orElseThrow(() -> new RuntimeException(
-                                "Cliente não encontrado com ID: " + motoRequest.idCliente()));
-                moto.setCliente(cliente);
-            } else {
-                moto.setCliente(null);
-            }
-
-            Moto motoAtualizada = motoRepository.save(moto);
-            return motoMapper.motoToResponse(motoAtualizada);
+        Cliente cliente = null;
+        if (motoRequest.idCliente() != null) {
+            cliente = clienteRepository.findById(motoRequest.idCliente()).orElseThrow(
+                    () -> new RecursoNaoEncontradoException(
+                            "Cliente não encontrado com ID: " + motoRequest.idCliente()));
         }
 
-        return null;
+        moto.setPlaca(motoRequest.placa());
+        moto.setModelo(motoRequest.modelo());
+        moto.setStatus(motoRequest.status());
+        moto.setDisponibilidade(motoRequest.disponibilidade());
+        moto.setVaga(motoRequest.vaga());
+        moto.setCondicao(motoRequest.condicao());
+        moto.setPatio(patio);
+        moto.setCliente(cliente);
+
+        return motoMapper.motoToResponse(motoRepository.save(moto));
+
     }
 
-    public boolean delete(Long id) {
-        Optional<Moto> moto = motoRepository.findById(id);
-        if (moto.isPresent()) {
-            motoRepository.delete(moto.get());
-            return true;
+    public void delete(Long id) {
+        if (!motoRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Moto não encontrada com o ID: " + id);
         }
-        return false;
+        motoRepository.deleteById(id);
     }
 }
